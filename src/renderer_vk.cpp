@@ -780,7 +780,7 @@ VK_IMPORT_DEVICE
 				, NULL
 				);
 
-			if (VK_SUCCESS == result
+			if (result >= VK_SUCCESS
 			&&  0 < numExtensionProperties)
 			{
 				VkExtensionProperties* extensionProperties = (VkExtensionProperties*)bx::alloc(g_allocator, numExtensionProperties * sizeof(VkExtensionProperties) );
@@ -820,7 +820,7 @@ VK_IMPORT_DEVICE
 		uint32_t numLayerProperties;
 		VkResult result = enumerateLayerProperties(_physicalDevice, &numLayerProperties, NULL);
 
-		if (VK_SUCCESS == result
+		if (result >= VK_SUCCESS
 		&&  0 < numLayerProperties)
 		{
 			VkLayerProperties* layerProperties = (VkLayerProperties*)bx::alloc(g_allocator, numLayerProperties * sizeof(VkLayerProperties) );
@@ -856,7 +856,7 @@ VK_IMPORT_DEVICE
 					, NULL
 					);
 
-				if (VK_SUCCESS == result
+				if (result >= VK_SUCCESS
 				&&  0 < numExtensionProperties)
 				{
 					VkExtensionProperties* extensionProperties = (VkExtensionProperties*)bx::alloc(g_allocator, numExtensionProperties * sizeof(VkExtensionProperties) );
@@ -1355,7 +1355,7 @@ VK_IMPORT
 				{
 					result = vkEnumerateInstanceVersion(&vulkanApiVersionSelector);
 
-					if (VK_SUCCESS != result)
+					if (result < VK_SUCCESS)
 					{
 						BX_TRACE(
 							  "Init error: vkEnumerateInstanceVersion failed %d: %s."
@@ -1409,7 +1409,7 @@ VK_IMPORT
 					, &m_instance
 					);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: vkCreateInstance failed %d: %s.", result, getName(result) );
 					goto error;
@@ -1460,7 +1460,7 @@ VK_IMPORT_INSTANCE
 					, m_allocatorCb
 					, &m_debugReportCallback
 					);
-				BX_WARN(VK_SUCCESS == result, "vkCreateDebugReportCallbackEXT failed %d: %s.", result, getName(result) );
+				BX_WARN(result >= VK_SUCCESS, "vkCreateDebugReportCallbackEXT failed %d: %s.", result, getName(result) );
 			}
 
 			{
@@ -1472,7 +1472,7 @@ VK_IMPORT_INSTANCE
 					, NULL
 					);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: vkEnumeratePhysicalDevices failed %d: %s.", result, getName(result) );
 					goto error;
@@ -1485,7 +1485,7 @@ VK_IMPORT_INSTANCE
 					, physicalDevices
 					);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: vkEnumeratePhysicalDevices failed %d: %s.", result, getName(result) );
 					goto error;
@@ -1836,7 +1836,7 @@ VK_IMPORT_INSTANCE
 									, &ifp
 									);
 
-								if (VK_SUCCESS == result)
+								if (result >= VK_SUCCESS)
 								{
 									support |= it.formatCaps[jj];
 
@@ -2009,7 +2009,7 @@ VK_IMPORT_INSTANCE
 					, &m_device
 					);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: vkCreateDevice failed %d: %s.", result, getName(result) );
 					goto error;
@@ -2042,7 +2042,7 @@ VK_IMPORT_DEVICE
 
 				result = m_cmd.init(m_globalQueueFamily, m_globalQueue);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: creating command queue failed %d: %s.", result, getName(result) );
 					goto error;
@@ -2050,7 +2050,7 @@ VK_IMPORT_DEVICE
 
 				result = m_cmd.alloc(&m_commandBuffer);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: allocating command buffer failed %d: %s.", result, getName(result) );
 					goto error;
@@ -2080,7 +2080,7 @@ VK_IMPORT_DEVICE
 						, m_resolution.formatColor
 						);
 
-					if (VK_SUCCESS != result)
+					if (result < VK_SUCCESS)
 					{
 						BX_TRACE("Init error: creating swap chain failed %d: %s.", result, getName(result) );
 						goto error;
@@ -2150,7 +2150,7 @@ VK_IMPORT_DEVICE
 				{
 					result = vkCreateDescriptorPool(m_device, &dpci, m_allocatorCb, &m_descriptorPool[ii]);
 
-					if (VK_SUCCESS != result)
+					if (result < VK_SUCCESS)
 					{
 						BX_TRACE("Init error: vkCreateDescriptorPool failed %d: %s.", result, getName(result) );
 						goto error;
@@ -2165,7 +2165,7 @@ VK_IMPORT_DEVICE
 				pcci.pInitialData    = NULL;
 				result = vkCreatePipelineCache(m_device, &pcci, m_allocatorCb, &m_pipelineCache);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: vkCreatePipelineCache failed %d: %s.", result, getName(result) );
 					goto error;
@@ -2211,7 +2211,7 @@ VK_IMPORT_DEVICE
 			{
 				result = m_gpuTimer.init();
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Init error: creating GPU timer failed %d: %s.", result, getName(result) );
 					goto error;
@@ -2222,7 +2222,7 @@ VK_IMPORT_DEVICE
 
 			result = m_occlusionQuery.init();
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Init error: creating occlusion query failed %d: %s.", result, getName(result) );
 				goto error;
@@ -3524,7 +3524,7 @@ VK_IMPORT_DEVICE
 
 			result = vkCreateRenderPass(m_device, &rpi, m_allocatorCb, &renderPass);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create render pass error: vkCreateRenderPass failed %d: %s.", result, getName(result) );
 				return result;
@@ -4600,7 +4600,7 @@ VK_IMPORT_DEVICE
 			bci.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
 
 			result = vkCreateBuffer(m_device, &bci, m_allocatorCb, _buffer);
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create host buffer error: vkCreateBuffer failed %d: %s.", result, getName(result) );
 				return result;
@@ -4611,20 +4611,20 @@ VK_IMPORT_DEVICE
 
 			result = allocateMemory(&mr, _flags, _memory, _forcePrivateDeviceAllocation);
 
-			if (VK_SUCCESS != result
+			if (result < VK_SUCCESS
 			&&  (_flags & VK_MEMORY_PROPERTY_HOST_CACHED_BIT) )
 			{
 				result = allocateMemory(&mr, _flags & ~VK_MEMORY_PROPERTY_HOST_CACHED_BIT, _memory, _forcePrivateDeviceAllocation);
 			}
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create host buffer error: vkAllocateMemory failed %d: %s.", result, getName(result) );
 				return result;
 			}
 
 			result = vkBindBufferMemory(m_device, *_buffer, _memory->mem, _memory->offset);
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create host buffer error: vkBindBufferMemory failed %d: %s.", result, getName(result) );
 				return result;
@@ -4636,7 +4636,7 @@ VK_IMPORT_DEVICE
 
 				void* dst;
 				result = vkMapMemory(m_device, _memory->mem, _memory->offset, _size, 0, &dst);
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Create host buffer error: vkMapMemory failed %d: %s.", result, getName(result) );
 					return result;
@@ -5012,7 +5012,7 @@ VK_DESTROY
 		VkMemoryPropertyFlags flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 		VkResult result = s_renderVK->allocateMemory(&mr, flags, &m_deviceMem, true);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			flags &= ~VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VK_CHECK(s_renderVK->allocateMemory(&mr, flags, &m_deviceMem, true) );
@@ -5176,7 +5176,7 @@ VK_DESTROY
 		VkMemoryPropertyFlags flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 		VkResult result = s_renderVK->allocateMemory(&mr, flags, &sbc.deviceMem, true);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			flags &= ~VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VK_CHECK(s_renderVK->allocateMemory(&mr, flags, &sbc.deviceMem, true) );
@@ -5966,7 +5966,7 @@ retry:
 
 		result = vkCreateQueryPool(device, &qpci, s_renderVK->m_allocatorCb, &m_queryPool);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create timer query error: vkCreateQueryPool failed %d: %s.", result, getName(result) );
 			return result;
@@ -5977,14 +5977,14 @@ retry:
 		const uint32_t size = count * sizeof(uint64_t);
 		result = s_renderVK->createReadbackBuffer(size, &m_readback, &m_readbackMemory);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			return result;
 		}
 
 		result = vkMapMemory(device, m_readbackMemory.mem, m_readbackMemory.offset, VK_WHOLE_SIZE, 0, (void**)&m_queryResult);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create timer query error: vkMapMemory failed %d: %s.", result, getName(result) );
 			return result;
@@ -6124,7 +6124,7 @@ retry:
 
 		result = vkCreateQueryPool(device, &qpci, s_renderVK->m_allocatorCb, &m_queryPool);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create occlusion query error: vkCreateQueryPool failed %d: %s.", result, getName(result) );
 			return result;
@@ -6135,14 +6135,14 @@ retry:
 		const uint32_t size = count * sizeof(uint32_t);
 		result = s_renderVK->createReadbackBuffer(size, &m_readback, &m_readbackMemory);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			return result;
 		}
 
 		result = vkMapMemory(device, m_readbackMemory.mem, m_readbackMemory.offset, VK_WHOLE_SIZE, 0, (void**)&m_queryResult);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create occlusion query error: vkMapMemory failed %d: %s.", result, getName(result) );
 			return result;
@@ -6379,7 +6379,7 @@ retry:
 
 		VkResult result = createImages(_commandBuffer);
 
-		if (VK_SUCCESS == result)
+		if (result >= VK_SUCCESS)
 		{
 			const VkImageLayout layout = 0 != (m_aspectFlags & (VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT) )
 				? VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
@@ -6450,7 +6450,8 @@ retry:
 			;
 		ici.tiling        = VK_IMAGE_TILING_OPTIMAL;
 
-		if (0 != _external)
+		result = vkCreateImage(device, &ici, allocatorCb, &m_textureImage);
+		if (result < VK_SUCCESS)
 		{
 			static_assert(sizeof(m_textureImage) == sizeof(_external), "Size must match!");
 			bx::memCopy(&m_textureImage, &_external, sizeof(VkImage) );
@@ -6459,7 +6460,12 @@ retry:
 
 			s_renderVK->m_cmd.addExternal({ uint16_t(this - s_renderVK->m_textures) });
 		}
-		else
+
+		VkMemoryRequirements imageMemReq;
+		vkGetImageMemoryRequirements(device, m_textureImage, &imageMemReq);
+
+		result = s_renderVK->allocateMemory(&imageMemReq, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &m_textureDeviceMem, false);
+		if (result < VK_SUCCESS)
 		{
 			result = vkCreateImage(device, &ici, allocatorCb, &m_textureImage);
 			if (VK_SUCCESS != result)
@@ -6468,22 +6474,11 @@ retry:
 				return result;
 			}
 
-			VkMemoryRequirements imageMemReq;
-			vkGetImageMemoryRequirements(device, m_textureImage, &imageMemReq);
-
-			result = s_renderVK->allocateMemory(&imageMemReq, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &m_textureDeviceMem, false);
-			if (VK_SUCCESS != result)
-			{
-				BX_TRACE("Create texture image error: allocateMemory failed %d: %s.", result, getName(result) );
-				return result;
-			}
-
-			result = vkBindImageMemory(device, m_textureImage, m_textureDeviceMem.mem, m_textureDeviceMem.offset);
-			if (VK_SUCCESS != result)
-			{
-				BX_TRACE("Create texture image error: vkBindImageMemory failed %d: %s.", result, getName(result) );
-				return result;
-			}
+		result = vkBindImageMemory(device, m_textureImage, m_textureDeviceMem.mem, m_textureDeviceMem.offset);
+		if (result < VK_SUCCESS)
+		{
+			BX_TRACE("Create texture image error: vkBindImageMemory failed %d: %s.", result, getName(result) );
+			return result;
 		}
 
 		m_sampledLayout = m_flags & BGFX_TEXTURE_COMPUTE_WRITE
@@ -6506,7 +6501,7 @@ retry:
 			ici_resolve.flags &= ~VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT;
 
 			result = vkCreateImage(device, &ici_resolve, allocatorCb, &m_singleMsaaImage);
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create texture image error: vkCreateImage failed %d: %s.", result, getName(result) );
 				return result;
@@ -6516,14 +6511,14 @@ retry:
 			vkGetImageMemoryRequirements(device, m_singleMsaaImage, &imageMemReq_resolve);
 
 			result = s_renderVK->allocateMemory(&imageMemReq_resolve, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &m_singleMsaaDeviceMem, false);
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create texture image error: allocateMemory failed %d: %s.", result, getName(result) );
 				return result;
 			}
 
 			result = vkBindImageMemory(device, m_singleMsaaImage, m_singleMsaaDeviceMem.mem, m_singleMsaaDeviceMem.offset);
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create texture image error: vkBindImageMemory failed %d: %s.", result, getName(result) );
 				return result;
@@ -7213,7 +7208,7 @@ retry:
 			, &view
 			);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create texture view error: vkCreateImageView failed %d: %s.", result, getName(result) );
 			return result;
@@ -7275,7 +7270,7 @@ retry:
 
 		result = createSurface();
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create swap chain error: creating surface failed %d: %s.", result, getName(result) );
 			goto error;
@@ -7311,7 +7306,7 @@ retry:
 
 			result = createSwapChain();
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swap chain error: creating swapchain and image views failed %d: %s", result, getName(result) );
 				goto error;
@@ -7323,7 +7318,7 @@ retry:
 		{
 			result = createAttachments(_commandBuffer);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swap chain error: creating MSAA/depth attachments failed %d: %s.", result, getName(result) );
 				goto error;
@@ -7335,7 +7330,7 @@ retry:
 		{
 			result = createFrameBuffer();
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swap chain error: creating frame buffers failed %d: %s.", result, getName(result) );
 				goto error;
@@ -7364,7 +7359,7 @@ retry:
 			break;
 		};
 
-		return VK_SUCCESS != result
+		return result < VK_SUCCESS
 			? result
 			: VK_ERROR_INITIALIZATION_FAILED
 			;
@@ -7441,7 +7436,7 @@ retry:
 					_commandBuffer = s_renderVK->m_commandBuffer;
 
 					VkResult result = createSurface();
-					if (VK_SUCCESS != result)
+					if (result < VK_SUCCESS)
 					{
 						BX_TRACE("Surface lost.");
 						return;
@@ -7466,7 +7461,7 @@ retry:
 				// on some platforms this happens when minimized
 				if (width  == 0
 				||  height == 0
-				||  VK_SUCCESS != result)
+				||  result < VK_SUCCESS)
 				{
 					m_sci.oldSwapchain = VK_NULL_HANDLE;
 					s_renderVK->kick(true);
@@ -7501,7 +7496,7 @@ retry:
 				sci.hinstance = (HINSTANCE)GetModuleHandle(NULL);
 				sci.hwnd      = (HWND)m_nwh;
 				result = vkCreateWin32SurfaceKHR(instance, &sci, allocatorCb, &m_surface);
-				BX_WARN(VK_SUCCESS == result, "vkCreateWin32SurfaceKHR failed %d: %s.", result, getName(result) );
+				BX_WARN(result >= VK_SUCCESS, "vkCreateWin32SurfaceKHR failed %d: %s.", result, getName(result) );
 			}
 		}
 #elif BX_PLATFORM_ANDROID
@@ -7514,7 +7509,7 @@ retry:
 				sci.flags = 0;
 				sci.window = (ANativeWindow*)m_nwh;
 				result = vkCreateAndroidSurfaceKHR(instance, &sci, allocatorCb, &m_surface);
-				BX_WARN(VK_SUCCESS == result, "vkCreateAndroidSurfaceKHR failed %d: %s.", result, getName(result) );
+				BX_WARN(result >= VK_SUCCESS, "vkCreateAndroidSurfaceKHR failed %d: %s.", result, getName(result) );
 			}
 		}
 #elif BX_PLATFORM_LINUX
@@ -7533,7 +7528,7 @@ retry:
 					sci.display = (wl_display*)g_platformData.ndt;
 					sci.surface = (wl_surface*)m_nwh;
 					result = vkCreateWaylandSurfaceKHR(instance, &sci, allocatorCb, &m_surface);
-					BX_WARN(VK_SUCCESS == result, "vkCreateWaylandSurfaceKHR failed %d: %s.", result, getName(result) );
+					BX_WARN(result >= VK_SUCCESS, "vkCreateWaylandSurfaceKHR failed %d: %s.", result, getName(result) );
 				}
 			}
 			else
@@ -7550,10 +7545,10 @@ retry:
 					sci.dpy    = (Display*)g_platformData.ndt;
 					sci.window = (Window)m_nwh;
 					result = vkCreateXlibSurfaceKHR(instance, &sci, allocatorCb, &m_surface);
-					BX_WARN(VK_SUCCESS == result, "vkCreateXlibSurfaceKHR failed %d: %s.", result, getName(result) );
+					BX_WARN(result >= VK_SUCCESS, "vkCreateXlibSurfaceKHR failed %d: %s.", result, getName(result) );
 				}
 
-				if (VK_SUCCESS != result
+				if (result < VK_SUCCESS
 				&&  s_extension[Extension::KHR_xcb_surface].m_supported
 				&&  NULL != vkCreateXcbSurfaceKHR
 				)
@@ -7573,7 +7568,7 @@ retry:
 						sci.connection = XGetXCBConnection( (Display*)g_platformData.ndt);
 						sci.window     = bx::narrowCast<xcb_window_t>(uintptr_t(m_nwh) );
 						result = vkCreateXcbSurfaceKHR(instance, &sci, allocatorCb, &m_surface);
-						BX_WARN(VK_SUCCESS == result, "vkCreateXcbSurfaceKHR failed %d: %s.", result, getName(result) );
+						BX_WARN(result >= VK_SUCCESS, "vkCreateXcbSurfaceKHR failed %d: %s.", result, getName(result) );
 
 						bx::dlclose(xcbdll);
 					}
@@ -7618,7 +7613,7 @@ retry:
 				sci.flags = 0;
 				sci.pView = (__bridge void*)layer;
 				result = vkCreateMacOSSurfaceMVK(instance, &sci, allocatorCb, &m_surface);
-				BX_WARN(VK_SUCCESS == result, "vkCreateMacOSSurfaceMVK failed %d: %s.", result, getName(result) );
+				BX_WARN(result >= VK_SUCCESS, "vkCreateMacOSSurfaceMVK failed %d: %s.", result, getName(result) );
 			}
 		}
 #elif BX_PLATFORM_NX
@@ -7630,7 +7625,7 @@ retry:
 			sci.flags  = 0;
 			sci.window = m_nwh;
 			result = vkCreateViSurfaceNN(instance, &sci, allocatorCb, &m_surface);
-			BX_WARN(VK_SUCCESS == result, "vkCreateViSurfaceNN failed %d: %s.", result, getName(result) );
+			BX_WARN(result >= VK_SUCCESS, "vkCreateViSurfaceNN failed %d: %s.", result, getName(result) );
 		}
 #else
 #	error "Figure out KHR surface..."
@@ -7638,7 +7633,7 @@ retry:
 
 		m_needToRecreateSurface = false;
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create surface error: vkCreate[Platform]SurfaceKHR failed %d: %s.", result, getName(result) );
 			return result;
@@ -7650,7 +7645,7 @@ retry:
 		VkBool32 surfaceSupported;
 		result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamily, m_surface, &surfaceSupported);
 
-		if (VK_SUCCESS != result
+		if (result < VK_SUCCESS
 		||  !surfaceSupported)
 		{
 			BX_TRACE("Create surface error: Presentation to the given surface not supported.");
@@ -7680,12 +7675,12 @@ retry:
 		//  - https://github.com/mpv-player/mpv/issues/8360
 		//  - https://github.com/bkaradzic/bgfx/issues/3227
 		result = vkDeviceWaitIdle(device);
-		BX_WARN(VK_SUCCESS == result, "Create swapchain error: vkDeviceWaitIdle() failed: %d: %s", result, getName(result) );
+		BX_WARN(result >= VK_SUCCESS, "Create swapchain error: vkDeviceWaitIdle() failed: %d: %s", result, getName(result) );
 
 		VkSurfaceCapabilitiesKHR surfaceCapabilities;
 		result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, m_surface, &surfaceCapabilities);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create swapchain error: vkGetPhysicalDeviceSurfaceCapabilitiesKHR failed %d: %s.", result, getName(result) );
 			return result;
@@ -7794,7 +7789,7 @@ retry:
 		m_sci.clipped            = VK_FALSE;
 
 		result = vkCreateSwapchainKHR(device, &m_sci, allocatorCb, &m_swapChain);
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create swapchain error: vkCreateSwapchainKHR failed %d: %s.", result, getName(result) );
 			return result;
@@ -7803,7 +7798,7 @@ retry:
 		m_sci.oldSwapchain = m_swapChain;
 
 		result = vkGetSwapchainImagesKHR(device, m_swapChain, &m_numSwapChainImages, NULL);
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("Create swapchain error: vkGetSwapchainImagesKHR failed %d: %s.", result, getName(result) );
 			return result;
@@ -7836,7 +7831,7 @@ retry:
 		}
 
 		result = vkGetSwapchainImagesKHR(device, m_swapChain, &m_numSwapChainImages, &m_backBufferColorImage[0]);
-		if (VK_SUCCESS != result && VK_INCOMPLETE != result)
+		if (result < VK_SUCCESS && VK_INCOMPLETE != result)
 		{
 			BX_TRACE("Create swapchain error: vkGetSwapchainImagesKHR failed %d: %s."
 				, result
@@ -7867,7 +7862,7 @@ retry:
 
 			result = vkCreateImageView(device, &ivci, allocatorCb, &m_backBufferColorImageView[ii]);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swapchain error: vkCreateImageView failed %d: %s.", result, getName(result) );
 				return result;
@@ -7967,7 +7962,7 @@ retry:
 				, depthFormat
 				);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swapchain error: creating depth stencil image failed %d: %s.", result, getName(result) );
 				return result;
@@ -7980,7 +7975,7 @@ retry:
 				, &m_backBufferDepthStencilImageView
 			);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create swapchain error: creating depth stencil image view failed %d: %s.", result, getName(result) );
 				return result;
@@ -7996,7 +7991,7 @@ retry:
 					, m_sci.imageFormat
 					);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Create swapchain error: creating MSAA color image failed %d: %s.", result, getName(result) );
 					return result;
@@ -8009,7 +8004,7 @@ retry:
 					, &m_backBufferColorMsaaImageView
 				);
 
-				if (VK_SUCCESS != result)
+				if (result < VK_SUCCESS)
 				{
 					BX_TRACE("Create swapchain error: creating MSAA color image view failed %d: %s.", result, getName(result) );
 					return result;
@@ -8043,7 +8038,7 @@ retry:
 		VkRenderPass renderPass;
 		result = s_renderVK->getRenderPass(*this, 0, &renderPass);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			return result;
 		}
@@ -8081,7 +8076,7 @@ retry:
 
 			result = vkCreateFramebuffer(device, &fci, allocatorCb, &m_backBufferFrameBuffer[ii]);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				return result;
 			}
@@ -8114,7 +8109,7 @@ retry:
 			, NULL
 			);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("findPresentMode error: vkGetPhysicalDeviceSurfacePresentModesKHR failed %d: %s.", result, getName(result) );
 			return UINT32_MAX;
@@ -8129,7 +8124,7 @@ retry:
 			, presentModes
 			);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			BX_TRACE("findPresentMode error: vkGetPhysicalDeviceSurfacePresentModesKHR failed %d: %s.", result, getName(result) );
 			return UINT32_MAX;
@@ -8159,6 +8154,81 @@ retry:
 		}
 
 		return idx;
+	}
+
+	TextureFormat::Enum SwapChainVK::findSurfaceFormat(TextureFormat::Enum _format, VkColorSpaceKHR _colorSpace, bool _srgb)
+	{
+		BGFX_PROFILER_SCOPE("SwapChainVK::findSurfaceFormat", kColorFrame);
+
+		VkResult result = VK_SUCCESS;
+
+		TextureFormat::Enum selectedFormat = TextureFormat::Count;
+
+		const VkPhysicalDevice physicalDevice = s_renderVK->m_physicalDevice;
+
+		uint32_t numSurfaceFormats;
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surface, &numSurfaceFormats, NULL);
+
+		if (result < VK_SUCCESS)
+		{
+			BX_TRACE("findSurfaceFormat error: vkGetPhysicalDeviceSurfaceFormatsKHR failed %d: %s.", result, getName(result) );
+			return selectedFormat;
+		}
+
+		VkSurfaceFormatKHR* surfaceFormats = (VkSurfaceFormatKHR*)bx::alloc(g_allocator, numSurfaceFormats * sizeof(VkSurfaceFormatKHR) );
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_surface, &numSurfaceFormats, surfaceFormats);
+
+		if (result < VK_SUCCESS)
+		{
+			BX_TRACE("findSurfaceFormat error: vkGetPhysicalDeviceSurfaceFormatsKHR failed %d: %s.", result, getName(result) );
+			bx::free(g_allocator, surfaceFormats);
+			return selectedFormat;
+		}
+
+		const TextureFormat::Enum requestedFormats[] =
+		{
+			_format,
+			TextureFormat::BGRA8,
+			TextureFormat::RGBA8,
+		};
+
+		for (uint32_t ii = 0; ii < BX_COUNTOF(requestedFormats) && TextureFormat::Count == selectedFormat; ++ii)
+		{
+			const TextureFormat::Enum requested = requestedFormats[ii];
+			const VkFormat requestedVkFormat = _srgb
+				? s_textureFormat[requested].m_fmtSrgb
+				: s_textureFormat[requested].m_fmt
+				;
+
+			for (uint32_t jj = 0; jj < numSurfaceFormats; jj++)
+			{
+				if (_colorSpace == surfaceFormats[jj].colorSpace
+				&&  requestedVkFormat == surfaceFormats[jj].format)
+				{
+					selectedFormat = requested;
+					if (0 != ii
+					&&  s_renderVK->m_swapChainFormats[_format] != selectedFormat)
+					{
+						s_renderVK->m_swapChainFormats[_format] = selectedFormat;
+						BX_TRACE(
+							"findSurfaceFormat: Surface format %s not found! Defaulting to %s."
+							, bimg::getName(bimg::TextureFormat::Enum(_format) )
+							, bimg::getName(bimg::TextureFormat::Enum(selectedFormat) )
+							);
+					}
+					break;
+				}
+			}
+		}
+
+		bx::free(g_allocator, surfaceFormats);
+
+		if (TextureFormat::Count == selectedFormat)
+		{
+			BX_TRACE("findSurfaceFormat error: No supported surface format found.");
+		}
+
+		return selectedFormat;
 	}
 
 	bool SwapChainVK::acquire(VkCommandBuffer _commandBuffer)
@@ -8215,7 +8285,7 @@ retry:
 				return false;
 
 			default:
-				BX_ASSERT(VK_SUCCESS == result, "vkAcquireNextImageKHR(...); VK error 0x%x: %s", result, getName(result) );
+				BX_ASSERT(result >= VK_SUCCESS, "vkAcquireNextImageKHR(...); VK error 0x%x: %s", result, getName(result) );
 				return false;
 			}
 
@@ -8281,7 +8351,7 @@ retry:
 				break;
 
 			default:
-				BX_ASSERT(VK_SUCCESS == result, "vkQueuePresentKHR(...); VK error 0x%x: %s", result, getName(result) );
+				BX_ASSERT(result >= VK_SUCCESS, "vkQueuePresentKHR(...); VK error 0x%x: %s", result, getName(result) );
 				break;
 			}
 
@@ -8343,14 +8413,14 @@ retry:
 
 		result = m_swapChain.create(s_renderVK->m_commandBuffer, _nwh, resolution);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			return result;
 		}
 
 		result = s_renderVK->getRenderPass(m_swapChain, 0, &m_renderPass, &m_renderPassHashKey);
 
-		if (VK_SUCCESS != result)
+		if (result < VK_SUCCESS)
 		{
 			return result;
 		}
@@ -8623,7 +8693,7 @@ retry:
 				, &m_commandList[ii].m_commandPool
 				);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create command queue error: vkCreateCommandPool failed %d: %s.", result, getName(result) );
 				return result;
@@ -8637,7 +8707,7 @@ retry:
 				, &m_commandList[ii].m_commandBuffer
 				);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create command queue error: vkAllocateCommandBuffers failed %d: %s.", result, getName(result) );
 				return result;
@@ -8650,7 +8720,7 @@ retry:
 				, &m_commandList[ii].m_fence
 				);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Create command queue error: vkCreateFence failed %d: %s.", result, getName(result) );
 				return result;
@@ -8690,7 +8760,7 @@ retry:
 				result = vkWaitForFences(device, 1, &commandList.m_fence, VK_TRUE, UINT64_MAX);
 			}
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Allocate command buffer error: vkWaitForFences failed %d: %s.", result, getName(result) );
 				return result;
@@ -8698,7 +8768,7 @@ retry:
 
 			result = vkResetCommandPool(device, commandList.m_commandPool, 0);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Allocate command buffer error: vkResetCommandPool failed %d: %s.", result, getName(result) );
 				return result;
@@ -8712,7 +8782,7 @@ retry:
 
 			result = vkBeginCommandBuffer(commandList.m_commandBuffer, &cbi);
 
-			if (VK_SUCCESS != result)
+			if (result < VK_SUCCESS)
 			{
 				BX_TRACE("Allocate command buffer error: vkBeginCommandBuffer failed %d: %s.", result, getName(result) );
 				return result;
